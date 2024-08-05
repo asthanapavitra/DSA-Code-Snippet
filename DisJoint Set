@@ -1,0 +1,48 @@
+class DisJointSet{
+        int[]parent,size,rank;
+        DisJointSet(int n ){
+            size=new int[n+1];
+            Arrays.fill(size,1);
+            rank=new int[n+1];
+            parent=new int[n+1];
+            for(int i=0;i<=n;i++){
+                parent[i]=i;
+                rank[i]=0;
+            }
+        }
+        int findParent(int u){
+            if(parent[u]==u){
+                return u;
+            }
+            return parent[u]=findParent(parent[u]);
+        }
+        void UnionBySize(int u,int v){
+            int pU=findParent(u);
+            int pV=findParent(v);
+            if(pV==pU) return;
+            if(size[pU]<size[pV]){
+                parent[pU]=pV;
+                size[pV]+=size[pU];
+            }
+            else{
+                parent[pV]=pU;
+                size[pU]+=size[pV];
+            }
+        }
+        void UnionByRank(int u,int v){
+            int pU=findParent(u);
+            int pV=findParent(v);
+            if(pV==pU) return;
+            if(rank[pU]<rank[pV]){
+                parent[pU]=pV;
+            }
+            else if(rank[pV]<rank[pU]){
+                parent[pV]=pU;
+               
+            }
+            else{
+                parent[pU]=pV;
+                rank[pU]=rank[pU]+1;
+            }
+        }
+    }
